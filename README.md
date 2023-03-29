@@ -14,9 +14,6 @@ database-path=data/database.sqlite
 
 ## 1. Option B: Rename the .env.example file to .env and change its values.
 
-
-After doing so, insert your telegram API key and the ID of the chat, where the bot should be running.
-
 ## 2. Now open up a terminal and run following commands:
 
 ```
