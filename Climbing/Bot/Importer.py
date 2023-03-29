@@ -43,10 +43,10 @@ class Importer:
             csv.pop(0)
             for row in csv:
                 # Convert the date into a datetime object
-                user_name, grade, date_ = row
+                username, grade, date_ = row
                 date_ = datetime.datetime.strptime(date_, '%Y-%m-%d').date()
 
-                self._database.add_route(user_name, grade, date_)
+                self._database.add_route(username, grade, date_)
                 i += 1
 
         print(f'Imported {i} rows successfully.')

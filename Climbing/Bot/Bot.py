@@ -79,11 +79,11 @@ class Bot:
         grades = Grade.get_grades()
         routes = self._database.get_routes()
         for route in routes:
-            user_name = route[1]
-            if user_name not in ranking.keys():
-                ranking[user_name] = 0
+            username = route[1]
+            if username not in ranking.keys():
+                ranking[username] = 0
 
-            ranking[user_name] += grades[route[2]]
+            ranking[username] += grades[route[2]]
 
         ranking = OrderedDict(sorted(ranking.items(), key=lambda x: x[1], reverse=True))
         table = create_pretty_table(['Username', 'Points'], list(ranking.items()))
@@ -100,11 +100,11 @@ class Bot:
             :return None
         """
         # If username is 'all', we return the stats for all users combined.
-        user_name = context.args[0] if context.args else update.message.from_user.first_name
-        if user_name.lower() == 'all':
-            user_name = None
+        username = context.args[0] if context.args else update.message.from_user.first_name
+        if username.lower() == 'all':
+            username = None
 
-        self._show_stats(update, user_name)
+        self._show_stats(update, username)
 
     def _session(self, update: Update, context: CallbackContext) -> None:
         """
@@ -118,19 +118,19 @@ class Bot:
         """
         self._show_stats(update, context.args[0] if context.args else update.message.from_user.first_name, date.today())
 
-    def _show_stats(self, update: Update, user_name: str, date_: date = None) -> None:
+    def _show_stats(self, update: Update, username: str, date_: date = None) -> None:
         """
             Shows the stats according to the given parameters
 
             :param update: Update
                 The context of the current message
-            :param user_name: str
+            :param username: str
                 The user to show the stats of
             :param date_: date
                 The date to show the stats of
             :return:
         """
-        routes = self._database.get_routes(user_name, date_)
+        routes = self._database.get_routes(username, date_)
 
         # Count how many routes of each difficulty the user has done
         grades = {}
@@ -160,7 +160,7 @@ class Bot:
 
         # If there were no topped routes, state so
         if not message:
-            message = f'{user_name} has not topped anything today!'
+            message = f'{username} has not topped anything today!'
 
         update.message.reply_text(message, parse_mode='MARKDOWN')
 
@@ -174,13 +174,13 @@ class Bot:
                 The callback context
             :return None
         """
-        user_name = update.message.from_user.first_name
+        username = update.message.from_user.first_name
         grade = update.message.text
         if grade not in Grade.get_grades().keys():
             self._telegram.send_message(f'The grade you entered is not valid: {grade}\.')
             return
 
-        self._database.add_route(user_name, grade)
+        self._database.add_route(username, grade)
 
     def _help(self, update: Update, context: CallbackContext) -> None:
         """

@@ -57,11 +57,11 @@ class Database:
 
         return True
 
-    def add_route(self, user_name: str, grade: str, date_: date = None) -> None:
+    def add_route(self, username: str, grade: str, date_: date = None) -> None:
         """
             Adds a route to the database
 
-            :param user_name: str
+            :param username: str
                 The name of the user who did the route
             :param grade: str
                 The grade of the route the user did
@@ -71,15 +71,15 @@ class Database:
         """
         route_date = date_ if date_ is not None else date.today()
         cursor = self._connection.cursor()
-        cursor.execute('INSERT INTO `routes` (`username`, `grade`, `date`) VALUES (?, ?, ?)', (user_name, grade, route_date))
+        cursor.execute('INSERT INTO `routes` (`username`, `grade`, `date`) VALUES (?, ?, ?)', (username, grade, route_date))
         cursor.close()
         self._connection.commit()
 
-    def get_routes(self, user_name: str = None, date_: date = None) -> list:
+    def get_routes(self, username: str = None, date_: date = None) -> list:
         """
             Returns a list of achieved routes
 
-            :param user_name: str
+            :param username: str
                 If given, only routes done by this user will be fetched
             :param date_: date
                 If given, only routes done at this date will be fetched
@@ -89,9 +89,9 @@ class Database:
         cursor = self._connection.cursor()
         where = []
         data = []
-        if user_name is not None:
+        if username is not None:
             where.append('`username` = ?')
-            data.append(user_name)
+            data.append(username)
 
         if date_ is not None:
             where.append('`date` = ?')
