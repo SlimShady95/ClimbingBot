@@ -15,7 +15,7 @@ Ends a session and removes the grade keyboard again.
 Displays a ranking for all users of this bot.
 
 /session
-Diplays your statistics of the current session.
+Displays your statistics of the current session.
 
 /session [username]
 Displays the statistics of the given user of the current session.
