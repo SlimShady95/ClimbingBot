@@ -28,6 +28,8 @@ At the moment, following commands are supported:
 | /start | Starts a session and displays the grade keyboard. |
 | /end | Ends a session and removes the grade keyboard again. |
 | /ranking | Displays a ranking for all users of this bot. |
+| /chart | Displays a chart with data of the topped routes. |
+| /chart [username] | 'Displays a chart with data of the topped routes for the given user. |
 | /session | Displays your statistics of the current session. |
 | /session [username] | Displays the statistics of the given user of the current session. |
 | /stats | Displays your all time statistics |
