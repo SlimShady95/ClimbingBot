@@ -2,7 +2,8 @@
 A bot you can use if you are into climbing/bouldering to keep track of your topped routes.
 
 # How to use?
-To run the bot, you have to create a file called .env and insert following content:
+
+First, either create a file called .env and paste the following:
 
 ```
 telegram-api-key=YOUR TELEGRAM API KEY
@@ -11,9 +12,14 @@ telegram-chat-id=ID OF THE CHAT
 database-path=data/database.sqlite
 ```
 
-Insert you telegram API key and the ID of the chat, where the bot should be running.
+*OR* 
 
-After you have done this, open up a terminal and run following commands:
+Rename the .env.example file to .env and change its values.
+
+
+After doing so, insert your telegram API key and the ID of the chat, where the bot should be running.
+
+Now open up a terminal and run following commands:
 
 ```
 cd C:\path\to\this\folder\
