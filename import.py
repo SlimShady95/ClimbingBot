@@ -3,6 +3,7 @@ from Climbing.Bot.Importer import Importer
 from Config import database_path
 
 from argparse import ArgumentParser
+from os import remove
 
 if __name__ == '__main__':
     # This program needs to be called with the file argument in order to run
@@ -20,5 +21,5 @@ if __name__ == '__main__':
 
     # Delete the file if the flag was set
     if args['delete']:
-        # TODO implement deleting process
+        remove(args['file'])
         print(f'Deleted {args["file"]}.')
