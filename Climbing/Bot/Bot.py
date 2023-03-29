@@ -35,7 +35,7 @@ class Bot:
         self._telegram.add_command(CommandHandler('end', self._end))
         self._telegram.add_command(CommandHandler('help', self._help))
         self._telegram.add_command(CommandHandler('ranking', self._ranking, pass_args=True))
-        self._telegram.add_command(CommandHandler('session', self._stats, pass_args=True))
+        self._telegram.add_command(CommandHandler('session', self._session, pass_args=True))
         self._telegram.add_command(CommandHandler('stats', self._stats, pass_args=True))
         self._telegram.add_command(MessageHandler(Filters.text, self._message))
         self._database = database

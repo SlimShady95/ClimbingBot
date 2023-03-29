@@ -57,7 +57,7 @@ class Database:
 
         return True
 
-    def add_route(self, user_name: str, grade: str) -> None:
+    def add_route(self, user_name: str, grade: str, date_: date = None) -> None:
         """
             Adds a route to the database
 
@@ -65,10 +65,13 @@ class Database:
                 The name of the user who did the route
             :param grade: str
                 The grade of the route the user did
+            :param date_: date
+                The date when the route was achieved. If not given, this will be the current date.
             :return None
         """
+        route_date = date_ if date_ is not None else date.today()
         cursor = self._connection.cursor()
-        cursor.execute('INSERT INTO `routes` (`username`, `grade`, `date`) VALUES (?, ?, ?)', (user_name, grade, date.today()))
+        cursor.execute('INSERT INTO `routes` (`username`, `grade`, `date`) VALUES (?, ?, ?)', (user_name, grade, route_date))
         cursor.close()
         self._connection.commit()
 
