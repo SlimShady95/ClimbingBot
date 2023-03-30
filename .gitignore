@@ -1,3 +1,4 @@
 .env
 .idea/
+data/database.sqlite
 __pycache__

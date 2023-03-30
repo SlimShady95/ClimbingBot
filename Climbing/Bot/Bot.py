@@ -97,8 +97,11 @@ class Bot:
             bouldering_grades = [grades[route[2]] for route in routes if route[2].startswith('V')]
             climbing_grades = [grades[route[2]] for route in routes if not route[2].startswith('V')]
 
-            averages_bouldering[date_] = sum(bouldering_grades) / len(bouldering_grades) if bouldering_grades else 0
-            averages_climbing[date_] = sum(climbing_grades) / len(climbing_grades) if climbing_grades else 0
+            if bouldering_grades:
+                averages_bouldering[date_] = sum(bouldering_grades) / len(bouldering_grades) # if bouldering_grades else 0
+
+            if climbing_grades:
+                averages_climbing[date_] = sum(climbing_grades) / len(climbing_grades) # if climbing_grades else 0
 
         del routes_grouped_by_date
 
@@ -112,11 +115,18 @@ class Bot:
         # TODO remove hardcoded path
         matplotlib.use('agg')
         pyplot.title('Average grade for bouldering/climbing in each session.')
-        pyplot.xlabel('Date')
-        pyplot.ylabel('Grade')
-        pyplot.plot(bouldering_chart_data.keys(), bouldering_chart_data.values(), label='Bouldering')
-        pyplot.plot(climbing_chart_data.keys(), climbing_chart_data.values(), label='Climbing')
-        pyplot.legend()
+        figure, (axis_boulder, axis_climbing) = pyplot.subplots(2, 1, constrained_layout=True)
+
+        axis_boulder.set_title('Bouldering')
+        axis_boulder.set_xlabel('Grade')
+        axis_boulder.set_ylabel('Date')
+        axis_boulder.plot(bouldering_chart_data.keys(), bouldering_chart_data.values(), label='Bouldering')
+
+        axis_climbing.set_title('Climbing')
+        axis_climbing.set_xlabel('Grade')
+        axis_climbing.set_ylabel('Date')
+        axis_climbing.plot(climbing_chart_data.keys(), climbing_chart_data.values(), label='Climbing')
+
         file_path = f'charts/{username}.png'
         pyplot.savefig(file_path)
         pyplot.clf()
