@@ -174,7 +174,7 @@ class Bot:
         if username.lower() == 'all':
             username = None
 
-        self._show_stats(update, username)
+        self._show_stats(update, username, full_statistics=True)
 
     def _session(self, update: Update, context: CallbackContext) -> None:
         """
@@ -188,7 +188,7 @@ class Bot:
         """
         self._show_stats(update, context.args[0] if context.args else update.message.from_user.first_name, date.today())
 
-    def _show_stats(self, update: Update, username: str, date_: date = None) -> None:
+    def _show_stats(self, update: Update, username: str, date_: date = None, full_statistics: bool = False) -> None:
         """
             Shows the stats according to the given parameters
 
@@ -198,18 +198,32 @@ class Bot:
                 The user to show the stats of
             :param date_: date
                 The date to show the stats of
+            :param full_statistics: bool
+                If set to true, the full statistics will be shown
             :return:
         """
         routes = self._database.get_routes(username, date_)
 
         # Count how many routes of each difficulty the user has done
         grades = {}
+        grades_info = Grade.get_grades()
+        completed_boulder = 0
+        completed_routes = 0
+        dates = set()
+        points = 0
         for route in routes:
             grade = route[2]
             if grade not in grades.keys():
                 grades[grade] = 0
 
+            if grade.startswith('V'):
+                completed_boulder += 1
+            else:
+                completed_routes += 1
+
             grades[grade] += 1
+            dates.add(route[3])
+            points += grades_info[grade]
 
         # Order the routes based on difficulty ascending and split them into two, one for bouldering and one for climbing
         grades = OrderedDict(sorted(grades.items(), key=lambda x: int(''.join([num for num in x[0] if num in digits]))))
@@ -223,7 +237,7 @@ class Bot:
         # Build the message
         message = ''
         if grades_boulder:
-            message += f'`{table_boulder.get_string(title="Boulder")}`\n\n\n'
+            message += f'`{table_boulder.get_string(title="Boulder")}`\n\n'
 
         if grades_climbing:
             message += f'`{table_climbing.get_string(title="Climbing Routes")}`'
@@ -231,6 +245,19 @@ class Bot:
         # If there were no topped routes, state so
         if not message:
             message = f'{username} has not topped anything today!'
+
+        # If the full statistics should be shown, do so
+        if full_statistics and message:
+            user_table_data = {
+                'Sessions': len(dates),
+                'Boulder': completed_boulder,
+                'Routes': completed_routes,
+                'Points': points
+            }
+            table_user = create_pretty_table(['Statistic', 'Value'], user_table_data.items())
+            table_user.align['Statistic'] = 'l'
+            table_user.align['Value'] = 'r'
+            message = f'`{table_user.get_string(title=username)}`\n\n{message}'
 
         update.message.reply_text(message, parse_mode='MARKDOWN')
 

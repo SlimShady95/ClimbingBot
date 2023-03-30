@@ -26,24 +26,8 @@ class Telegram:
         """
         self._api_key = api_key
         self._chat_id = chat_id
-        self._init_updater()
-
-    def _init_updater(self) -> None:
-        """
-            Initializes the updater of the telegram bot
-
-            :return None
-        """
         self._updater = Updater(self._api_key)
-
-        # If the bot crashes, which happens from time to time and I cannot figure out why this happens, we just create
-        # a new instance and start polling again
-        try:
-            self._updater.start_polling()
-        except Exception as e:
-            print(e)
-            print('Restarting updater...')
-            self._init_updater()
+        self._updater.start_polling()
 
     def add_command(self, handler: Union[CommandHandler, MessageHandler]) -> 'Telegram':
         """
