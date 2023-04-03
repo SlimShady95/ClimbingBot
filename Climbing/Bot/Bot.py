@@ -67,7 +67,7 @@ class Bot:
                 The callback context
             :return None
         """
-        update.message.reply_text(reply_markup=ReplyKeyboardRemove())
+        update.message.reply_text('Hope you had a good session!', reply_markup=ReplyKeyboardRemove())
 
     def _chart(self, update: Update, context: CallbackContext) -> None:
         """
@@ -98,10 +98,10 @@ class Bot:
             climbing_grades = [grades[route[2]] for route in routes if not route[2].startswith('V')]
 
             if bouldering_grades:
-                averages_bouldering[date_] = sum(bouldering_grades) / len(bouldering_grades) # if bouldering_grades else 0
+                averages_bouldering[date_] = sum(bouldering_grades) / len(bouldering_grades)
 
             if climbing_grades:
-                averages_climbing[date_] = sum(climbing_grades) / len(climbing_grades) # if climbing_grades else 0
+                averages_climbing[date_] = sum(climbing_grades) / len(climbing_grades)
 
         del routes_grouped_by_date
 
